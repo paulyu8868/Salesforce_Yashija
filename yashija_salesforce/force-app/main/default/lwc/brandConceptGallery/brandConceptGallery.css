@@ -1,0 +1,32 @@
+/* brandConceptGallery.css */
+.image-container {
+    position: relative;
+    text-align: center;
+    min-height: 250px;  /* 400px → 250px */
+    background: #f4f6f9;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.concept-image {
+    max-width: 100%;
+    max-height: 300px;  /* 500px → 300px */
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* 추가: 전체 카드 패딩 줄이기 */
+.slds-p-around_medium {
+    padding: 0.75rem !important;  /* 기본 1rem에서 줄임 */
+}
+
+/* 버튼 크기 조절 */
+.navigation-buttons lightning-button {
+    --slds-c-button-sizing-border: 1px;
+    --slds-c-button-spacing-block-start: 0.25rem;
+    --slds-c-button-spacing-block-end: 0.25rem;
+}

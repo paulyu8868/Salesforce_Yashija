@@ -1,0 +1,219 @@
+<template>
+    <lightning-card title="Yashija Map" icon-name="utility:location">
+        <div class="slds-p-horizontal_medium">
+            <!-- 마커 필터 버튼 (이벤트 아이콘 업데이트) -->
+            <div class="slds-m-bottom_medium">
+                <div class="slds-form-element">
+                    <div class="marker-filter-buttons">
+                        <button 
+                            class={headquartersButtonClass}
+                            onclick={handleFilterToggle}
+                            data-marker-type="headquarters"
+                        >
+                            <div class="filter-button-content">
+                                <div class="filter-marker headquarters-mini"></div>
+                                <span>본사</span>
+                            </div>
+                        </button>
+                        
+                        <button 
+                            class={eventButtonClass}
+                            onclick={handleFilterToggle}
+                            data-marker-type="event"
+                        >
+                            <div class="filter-button-content">
+                                <div class="filter-marker event-mini">
+                                    <lightning-icon icon-name="standard:event" size="x-small"></lightning-icon>
+                                </div>
+                                <span>일정</span>
+                            </div>
+                        </button>
+                        
+                        <button 
+                            class={accountButtonClass}
+                            onclick={handleFilterToggle}
+                            data-marker-type="account"
+                        >
+                            <div class="filter-button-content">
+                                <div class="filter-marker account-mini">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M17.5 7H17v-.5C17 4.57 15.43 3 13.5 3h-3C8.57 3 7 4.57 7 6.5V7h-.5C5.67 7 5 7.67 5 8.5v11c0 .83.67 1.5 1.5 1.5h11c.83 0 1.5-.67 1.5-1.5v-11c0-.83-.67-1.5-1.5-1.5zM9 6.5C9 5.67 9.67 5 10.5 5h3c.83 0 1.5.67 1.5 1.5V7H9v-.5zM8 10h2v2H8v-2zm3 0h2v2h-2v-2zm3 0h2v2h-2v-2zM8 13h2v2H8v-2zm3 0h2v2h-2v-2zm3 0h2v2h-2v-2z"></path>
+                                    </svg>
+                                </div>
+                                <span>고객(야쉬자호텔)</span>
+                            </div>
+                        </button>
+                        
+                        <button 
+                            class={opportunityButtonClass}
+                            onclick={handleFilterToggle}
+                            data-marker-type="opportunity"
+                        >
+                            <div class="filter-button-content">
+                                <div class="filter-marker opportunity-mini">
+                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 6L9.5 9L7 6l-.5 7h11L17 6l-2.5 3L12 6z"></path>
+                                        <circle cx="7" cy="4" r="2"></circle>
+                                        <circle cx="12" cy="2" r="2"></circle>
+                                        <circle cx="17" cy="4" r="2"></circle>
+                                        <rect x="5" y="18" width="14" height="2"></rect>
+                                    </svg>
+                                </div>
+                                <span>기회</span>
+                            </div>
+                        </button>
+                        
+                        <button 
+                            class={campaignButtonClass}
+                            onclick={handleFilterToggle}
+                            data-marker-type="campaign"
+                        >
+                            <div class="filter-button-content">
+                                <div class="filter-marker campaign-mini">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path>
+                                    </svg>
+                                </div>
+                                <span>캠페인(재영업고객)</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+  
+            <!-- 로딩 스피너 -->
+            <template if:true={isLoading}>
+                <div class="slds-text-align_center slds-m-bottom_medium">
+                    <lightning-spinner alternative-text="로딩 중..." size="small"></lightning-spinner>
+                </div>
+            </template>
+  
+            <!-- 오류 메시지 -->
+            <template if:true={errorMessage}>
+                <div class="slds-m-bottom_medium">
+                    <div class="slds-notify slds-notify_alert slds-alert_error">
+                        <span class="slds-assistive-text">오류</span>
+                        <h2>{errorMessage}</h2>
+                    </div>
+                </div>
+            </template>
+  
+            <!-- 지도 영역 + 컨트롤 버튼들 -->
+            <div class="map-container">
+                <div class="map-div" lwc:dom="manual"></div>
+                
+                <!-- 홈 버튼 (왼쪽 상단) -->
+                <button class="map-control-btn home-btn" onclick={goToHome} title="본사로 이동">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2.1L1 12h3v9h6v-6h4v6h6v-9h3L12 2.1zM12 4.7l6 5.4v8.4h-2v-6H8v6H6v-8.4l6-5.4z"></path>
+                    </svg>
+                </button>
+                
+                <!-- 현재위치 버튼 (왼쪽 하단) -->
+                <button class="map-control-btn location-btn" onclick={goToCurrentLocation} title="현재 위치로 이동">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path>
+                    </svg>
+                </button>
+            </div>
+  
+            <!-- 일정 테이블 -->
+            <template if:true={isMapInitialized}>
+                <div class="slds-m-top_large">
+                    <div class="slds-card">
+                        <div class="slds-card__header slds-grid">
+                            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                <div class="slds-media__figure">
+                                    <lightning-icon icon-name="standard:event" size="small"></lightning-icon>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h2 class="slds-card__header-title">
+                                        <span>일정 목록</span>
+                                    </h2>
+                                </div>
+                            </header>
+                        </div>
+                        <div class="slds-card__body slds-card__body_inner">
+                            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+                                <thead>
+                                    <tr class="slds-line-height_reset">
+                                        <th class="slds-text-title_caps" scope="col">
+                                            <div class="slds-truncate" title="담당자">영업담당자</div>
+                                        </th>
+                                        <th class="slds-text-title_caps" scope="col">
+                                            <div class="slds-truncate" title="고객">고객</div>
+                                        </th>
+                                        <th class="slds-text-title_caps" scope="col">
+                                            <div class="slds-truncate" title="날짜">날짜</div>
+                                        </th>
+                                        <th class="slds-text-title_caps" scope="col">
+                                            <div class="slds-truncate" title="시간">시간</div>
+                                        </th>
+                                        <th class="slds-text-title_caps" scope="col">
+                                            <div class="slds-truncate" title="위치">위치</div>
+                                        </th>
+                                        <th class="slds-text-title_caps" scope="col">
+                                            <div class="slds-truncate" title="연락처">연락처</div>
+                                        </th>
+                                        <th class="slds-text-title_caps" scope="col">
+                                            <div class="slds-truncate" title="액션">위치 보기</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={scheduleData} for:item="schedule">
+                                        <tr key={schedule.id} class="slds-hint-parent">
+                                            <td data-label="담당자">
+                                                <div class="slds-truncate" title={schedule.assignedTo}>
+                                                    {schedule.assignedTo}
+                                                </div>
+                                            </td>
+                                            <td data-label="고객">
+                                                <div class="slds-truncate" title={schedule.customerName}>
+                                                    {schedule.customerName}
+                                                </div>
+                                            </td>
+                                            <td data-label="날짜">
+                                                <div class="slds-truncate" title={schedule.date}>
+                                                    {schedule.date}
+                                                </div>
+                                            </td>
+                                            <td data-label="시간">
+                                                <div class="slds-truncate" title={schedule.time}>
+                                                    {schedule.time}
+                                                </div>
+                                            </td>
+                                            <td data-label="위치">
+                                                <div class="slds-truncate" title={schedule.location}>
+                                                    {schedule.location}
+                                                </div>
+                                            </td>
+                                            <td data-label="연락처">
+                                                <div class="slds-truncate" title={schedule.phone}>
+                                                    {schedule.phone}
+                                                </div>
+                                            </td>
+                                            <td data-label="액션">
+                                                <button 
+                                                    class="slds-button slds-button_icon slds-button_icon-border-filled"
+                                                    onclick={handleMoveToLocation}
+                                                    data-schedule-id={schedule.id}
+                                                    title="위치로 이동"
+                                                >
+                                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="slds-button__icon">
+                                                        <path d="M2,3L2,9L7,12L2,15L2,21L22,12L2,3Z"></path>
+                                                    </svg>
+                                                    <span class="slds-assistive-text">위치로 이동</span>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+  </template>

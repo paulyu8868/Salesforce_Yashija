@@ -1,0 +1,244 @@
+/* 지도 컨테이너 */
+.map-container {
+    width: 100%;
+    height: 500px;
+    position: relative;
+    border: 1px solid #d8dde6;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.map-div {
+    width: 100%;
+    height: 100%;
+}
+
+/* 검색 필터 영역 */
+.search-filters {
+    background-color: #f3f2f2;
+    padding: 1rem;
+    border-radius: 4px;
+}
+
+/* 검색 결과 요약 */
+.search-summary {
+    padding: 0.5rem 1rem;
+    background-color: #e8f4e8;
+    border-left: 3px solid #2e844a;
+    border-radius: 4px;
+}
+
+/* 지도 컨트롤 버튼 */
+.map-control-btn {
+    position: absolute;
+    width: 44px;
+    height: 44px;
+    background: #fff;
+    border: 2px solid #E5E5E5;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease;
+    z-index: 1000;
+    color: #54698D;
+}
+
+.map-control-btn:hover {
+    border-color: #1B96FF;
+    background: #F3F9FF;
+    color: #1B96FF;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(27, 150, 255, 0.2);
+}
+
+.map-control-btn:active {
+    transform: scale(0.95);
+}
+
+/* 홈 버튼 (왼쪽 상단) */
+.home-btn {
+    top: 12px;
+    left: 12px;
+}
+
+/* 호텔 마커 */
+:host .marker.hotel {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
+    border: 3px solid white;
+    cursor: pointer;
+}
+
+:host .marker.hotel .marker-icon {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* 상단 중앙 숫자 배지 */
+:host .marker.hotel .top-number-badge {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    border: 2px solid;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+/* 호텔 마커 호버 효과 */
+:host .marker.hotel:hover {
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* 마커 팝업 커스터마이징 */
+:host .leaflet-popup-content-wrapper {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    border: none;
+}
+
+:host .leaflet-popup-content {
+    margin: 16px;
+    line-height: 1.4;
+    font-size: 13px;
+    font-family: 'Salesforce Sans', Arial, sans-serif;
+    min-width: 200px;
+}
+
+:host .leaflet-popup-tip {
+    background: #fff;
+}
+
+/* 범례 */
+.legend-container {
+    background-color: #f3f2f2;
+    padding: 0.75rem;
+    border-radius: 4px;
+}
+
+.legend-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.legend-color {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    position: relative;
+}
+
+.legend-number {
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: bold;
+    border: 1.5px solid;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+.legend-label {
+    font-size: 0.875rem;
+    color: #3e3e3c;
+}
+
+/* 모바일 최적화 */
+@media (max-width: 768px) {
+    .map-container {
+        height: 350px;
+    }
+    
+    .search-filters .slds-grid {
+        display: block;
+    }
+    
+    .search-filters .slds-col {
+        width: 100% !important;
+        margin-bottom: 0.5rem;
+    }
+    
+    .search-filters .slds-align-bottom {
+        margin-top: 0 !important;
+    }
+    
+    .search-filters lightning-button {
+        width: 100%;
+    }
+    
+    .legend-items {
+        justify-content: center;
+    }
+    
+    .map-control-btn {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* 상권 마커 */
+:host .marker.area {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #FF6900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 3px 12px rgba(255, 105, 0, 0.4);
+    border: 3px solid white;
+    cursor: pointer;
+}
+
+:host .marker.area .marker-icon {
+    color: white;
+    font-size: 20px;
+}
+
+:host .marker.area:hover {
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
+}

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>64.0</apiVersion>
+    <label>Quote Creation with Design Team</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <runInMode>SystemModeWithoutSharing</runInMode>
+    
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Opportunity</targetReference>
+        </connector>
+    </start>
+    
+    <recordLookups>
+        <name>Get_Opportunity</name>
+        <label>Get Opportunity</label>
+        <locationX>176</locationX>
+        <locationY>158</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Quote_Info_Screen</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <object>Opportunity</object>
+        <outputReference>OpportunityRecord</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <queriedFields>AccountId</queriedFields>
+    </recordLookups>
+    
+    <screens>
+        <name>Quote_Info_Screen</name>
+        <label>Quote Information</label>
+        <locationX>176</locationX>
+        <locationY>278</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Create_Quote</targetReference>
+        </connector>
+        <fields>
+            <name>Quote_Name</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>DefaultQuoteName</elementReference>
+            </defaultValue>
+            <fieldText>견적서 이름</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Expiration_Date</name>
+            <dataType>Date</dataType>
+            <defaultValue>
+                <elementReference>DefaultExpirationDate</elementReference>
+            </defaultValue>
+            <fieldText>견적 유효기간</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Description</name>
+            <fieldText>특이사항</fieldText>
+            <fieldType>LargeTextArea</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    
+    <recordCreates>
+        <name>Create_Quote</name>
+        <label>Create Quote</label>
+        <locationX>176</locationX>
+        <locationY>398</locationY>
+        <connector>
+            <targetReference>Success_Screen</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Name</field>
+            <value>
+                <elementReference>Quote_Name</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>OpportunityId</field>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ExpirationDate</field>
+            <value>
+                <elementReference>Expiration_Date</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Description</field>
+            <value>
+                <elementReference>Description</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Draft</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Quote</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    
+    <screens>
+        <name>Success_Screen</name>
+        <label>Success</label>
+        <locationX>176</locationX>
+        <locationY>518</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Success_Message</name>
+            <fieldText>✅ 견적서가 성공적으로 생성되었습니다!</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    
+    <formulas>
+        <name>DefaultQuoteName</name>
+        <dataType>String</dataType>
+        <expression>{!OpportunityRecord.Name} + " - 견적서"</expression>
+    </formulas>
+    
+    <formulas>
+        <name>DefaultExpirationDate</name>
+        <dataType>Date</dataType>
+        <expression>TODAY() + 30</expression>
+    </formulas>
+    
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    
+    <variables>
+        <name>OpportunityRecord</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Opportunity</objectType>
+    </variables>
+</Flow>

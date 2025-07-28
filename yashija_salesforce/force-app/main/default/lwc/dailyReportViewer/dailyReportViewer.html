@@ -1,0 +1,112 @@
+<template>
+    <lightning-card title="시공 현장 기록" icon-name="standard:work_order">
+        <lightning-button-icon 
+            icon-name="utility:refresh" 
+            alternative-text="새로고침" 
+            title="새로고침"
+            onclick={handleRefresh}
+            slot="actions">
+        </lightning-button-icon>
+
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+            <!-- 로딩 스피너 -->
+            <template if:true={isLoading}>
+                <div class="slds-align_absolute-center slds-p-vertical_large">
+                    <lightning-spinner alternative-text="로딩 중" size="medium"></lightning-spinner>
+                </div>
+            </template>
+
+            <!-- 에러 메시지 -->
+            <template if:true={error}>
+                <div class="slds-text-color_error slds-text-align_center slds-p-vertical_large">
+                    <lightning-icon icon-name="utility:error" variant="error" size="small"></lightning-icon>
+                    <p class="slds-p-top_small">보고서를 불러오는 중 오류가 발생했습니다.</p>
+                </div>
+            </template>
+
+            <!-- 보고서가 없을 때 -->
+            <template if:true={hasNoReports}>
+                <div class="slds-align_absolute-center slds-p-vertical_large">
+                    <div class="slds-text-align_center">
+                        <lightning-icon icon-name="standard:report" size="large"></lightning-icon>
+                        <p class="slds-text-heading_medium slds-p-top_medium">등록된 일일 보고가 없습니다.</p>
+                        <p class="slds-text-body_regular slds-text-color_weak">시공사가 일일 보고를 등록하면 여기에 표시됩니다.</p>
+                    </div>
+                </div>
+            </template>
+
+            <!-- 보고서 카드 -->
+            <template if:false={isLoading}>
+                <template if:false={hasNoReports}>
+                    <div class="report-container">
+                        <!-- 네비게이션 정보 -->
+                        <div class="navigation-info">
+                            <span class="page-info">{currentPageInfo}</span>
+                        </div>
+
+                        <!-- 보고서 카드 -->
+                        <div class="report-card">
+                            <!-- 이미지 섹션 -->
+                            <div class="image-section">
+                                <template if:true={hasImage}>
+                                    <img 
+                                        src={currentImageUrl} 
+                                        alt="시공 현장 사진"
+                                        class="report-image"
+                                        onerror={handleImageError}
+                                    />
+                                    <div class="no-image-placeholder" style="display:none;">
+                                        <span>[사진 없음.]</span>
+                                    </div>
+                                </template>
+                                <template if:false={hasImage}>
+                                    <div class="no-image-placeholder">
+                                        <span>[사진 없음.]</span>
+                                    </div>
+                                </template>
+                            </div>
+
+                            <!-- 보고 정보 섹션 -->
+                            <div class="report-info">
+                                <div class={reportTypeClass}>
+                                    <lightning-icon icon-name={reportTypeIcon} size="x-small"></lightning-icon>
+                                    <span>{currentReport.Report_Type__c}</span>
+                                </div>
+                                
+                                <div class="report-date">{formattedDate}</div>
+                                
+                                <div class="report-content">
+                                    <h3 class="content-title">오늘 작업 내용</h3>
+                                    <p class="content-text">{progressText}</p>
+                                </div>
+
+                                <div class="reporter-info">
+                                    <lightning-icon icon-name="utility:user" size="x-small"></lightning-icon>
+                                    <span>{reporterName}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 네비게이션 버튼 -->
+                        <div class="navigation-buttons">
+                            <button 
+                                class="nav-btn nav-btn-prev"
+                                onclick={handlePrevious}
+                                disabled={isPreviousDisabled}>
+                                <lightning-icon icon-name="utility:chevronleft" size="small"></lightning-icon>
+                                <span>이전</span>
+                            </button>
+                            <button 
+                                class="nav-btn nav-btn-next"
+                                onclick={handleNext}
+                                disabled={isNextDisabled}>
+                                <span>다음</span>
+                                <lightning-icon icon-name="utility:chevronright" size="small"></lightning-icon>
+                            </button>
+                        </div>
+                    </div>
+                </template>
+            </template>
+        </div>
+    </lightning-card>
+</template>

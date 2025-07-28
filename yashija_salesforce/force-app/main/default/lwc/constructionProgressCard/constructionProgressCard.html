@@ -1,0 +1,143 @@
+<template>
+    <lightning-card title="" >
+        <lightning-button-icon 
+            icon-name="utility:refresh" 
+            alternative-text="새로고침" 
+            title="새로고침"
+            onclick={handleRefresh}
+            slot="actions">
+        </lightning-button-icon>
+
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+            <!-- 로딩 스피너 -->
+            <template if:true={isLoading}>
+                <div class="slds-align_absolute-center slds-p-vertical_large">
+                    <lightning-spinner alternative-text="로딩 중" size="medium"></lightning-spinner>
+                </div>
+            </template>
+
+            <!-- 에러 메시지 -->
+            <template if:true={errorMessage}>
+                <div class="slds-text-color_error slds-text-align_center slds-p-vertical_large">
+                    <lightning-icon icon-name="utility:error" variant="error" size="small"></lightning-icon>
+                    <p class="slds-p-top_small">{errorMessage}</p>
+                </div>
+            </template>
+
+            <!-- 메인 콘텐츠 -->
+            <template if:false={isLoading}>
+                <template if:false={errorMessage}>
+                    <div class="progress-container">
+                        <!-- 메인 정보 카드 -->
+                        <div class="main-card">
+                            <div class="status-indicator">
+                                <div class="status-dot"></div>
+                                <span>진행중</span>
+                            </div>
+                            
+                            <h2 class="hotel-name">{projectData.hotelName}</h2>
+                            
+                            <div class="dday-section">
+                                <span class="dday-text">{dDay}</span>
+                                <span class="end-date">{formattedEndDate} 완료 예정</span>
+                            </div>
+                            
+                            <div class="progress-section">
+                                <div class="progress-header">
+                                    <span>전체 진행률</span>
+                                    <span class="progress-percentage">{projectData.progress}%</span>
+                                </div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar" data-progress={projectData.progress}></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 시공 단계 카드 -->
+                        <div class="phase-card">
+                            <h3>시공 단계</h3>
+                            
+                            <!-- 단계 진행 라인 -->
+                            <div class="phase-container">
+                                <div class="phase-line-bg"></div>
+                                <div class="phase-line-progress" data-progress={projectData.progress}></div>
+                            </div>
+                            
+                            <div class="phase-list">
+                                <!-- 철거 -->
+                                <div class="phase-item">
+                                    <div class={phaseClass1}>
+                                        <template if:true={isPhase1Completed}>
+                                            <lightning-icon icon-name="utility:check" size="x-small" variant="inverse"></lightning-icon>
+                                        </template>
+                                        <template if:false={isPhase1Completed}>
+                                            <span>1</span>
+                                        </template>
+                                    </div>
+                                    <span class="phase-label">철거</span>
+                                </div>
+                                
+                                <!-- 전기 -->
+                                <div class="phase-item">
+                                    <div class={phaseClass2}>
+                                        <template if:true={isPhase2Completed}>
+                                            <lightning-icon icon-name="utility:check" size="x-small" variant="inverse"></lightning-icon>
+                                        </template>
+                                        <template if:false={isPhase2Completed}>
+                                            <span>2</span>
+                                        </template>
+                                    </div>
+                                    <span class="phase-label">전기</span>
+                                </div>
+                                
+                                <!-- 배관 -->
+                                <div class="phase-item">
+                                    <div class={phaseClass3}>
+                                        <template if:true={isPhase3Completed}>
+                                            <lightning-icon icon-name="utility:check" size="x-small" variant="inverse"></lightning-icon>
+                                        </template>
+                                        <template if:false={isPhase3Completed}>
+                                            <span>3</span>
+                                        </template>
+                                    </div>
+                                    <span class="phase-label">배관</span>
+                                </div>
+                                
+                                <!-- 인테리어 -->
+                                <div class="phase-item">
+                                    <div class={phaseClass4}>
+                                        <template if:true={isPhase4Completed}>
+                                            <lightning-icon icon-name="utility:check" size="x-small" variant="inverse"></lightning-icon>
+                                        </template>
+                                        <template if:false={isPhase4Completed}>
+                                            <span>4</span>
+                                        </template>
+                                    </div>
+                                    <span class="phase-label">인테리어</span>
+                                </div>
+                                
+                                <!-- 마감 -->
+                                <div class="phase-item">
+                                    <div class={phaseClass5}>
+                                        <template if:true={isPhase5Completed}>
+                                            <lightning-icon icon-name="utility:check" size="x-small" variant="inverse"></lightning-icon>
+                                        </template>
+                                        <template if:false={isPhase5Completed}>
+                                            <span>5</span>
+                                        </template>
+                                    </div>
+                                    <span class="phase-label">마감</span>
+                                </div>
+                            </div>
+                            
+                            <div class="current-phase-info">
+                                <p class="info-label">현재 단계</p>
+                                <p class="info-value">{currentPhaseDescription}</p>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </template>
+        </div>
+    </lightning-card>
+</template>

@@ -1,0 +1,46 @@
+<!-- brandConceptGallery.html -->
+<template>
+    <lightning-card title="">
+        <div class="slds-p-around_medium">
+            <!-- 브랜드 선택 -->
+            <lightning-combobox
+                name="brand"
+                label=""
+                value={selectedBrand}
+                placeholder="브랜드를 선택하세요"
+                options={brandOptions}
+                onchange={handleBrandChange}
+                class="slds-m-bottom_medium">
+            </lightning-combobox>
+            
+            <!-- 이미지 표시 영역 -->
+            <div class="image-container">
+                <template if:true={currentImage}>
+                    <img src={currentImage} alt="컨셉 이미지" class="concept-image">
+                </template>
+                <template if:false={currentImage}>
+                    <div class="no-image">이미지가 없습니다.</div>
+                </template>
+            </div>
+            
+    
+            
+            <!-- 네비게이션 버튼 -->
+            <div class="navigation-buttons slds-m-top_medium">
+                <lightning-button
+                    label="이전"
+                    onclick={handlePrevious}
+                    variant="neutral"
+                    disabled={disablePrevious}>
+                </lightning-button>
+                <lightning-button
+                    label="다음"
+                    onclick={handleNext}
+                    variant="neutral"
+                    disabled={disableNext}
+                    class="slds-m-left_small">
+                </lightning-button>
+            </div>
+        </div>
+    </lightning-card>
+</template>

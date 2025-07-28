@@ -1,0 +1,523 @@
+/* 마커 필터 버튼 스타일 */
+.marker-filter-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  
+  .marker-filter-buttons button {
+    background: #fff;
+    border: 2px solid #E5E5E5;
+    border-radius: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 44px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  
+  .marker-filter-buttons button:hover {
+    border-color: #1B96FF;
+    box-shadow: 0 2px 8px rgba(27, 150, 255, 0.1);
+  }
+  
+  .marker-filter-buttons button.active {
+    border-color: #1B96FF;
+    background: #F3F9FF;
+    box-shadow: 0 2px 8px rgba(27, 150, 255, 0.15);
+  }
+  
+  .filter-button-content {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  /* 미니 마커 스타일 */
+  .filter-marker {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  }
+  
+  .filter-marker.headquarters-mini {
+    background: #1B96FF;
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg);
+  }
+  
+  .filter-marker.headquarters-mini::before {
+    content: '🏢';
+    transform: rotate(45deg);
+    font-size: 10px;
+  }
+  
+  .filter-marker.event-mini {
+    background: #9F2FFF;
+    border-radius: 4px;
+    padding: 2px;
+  }
+  
+  .filter-marker.event-mini lightning-icon {
+    --slds-c-icon-color-foreground: white;
+  }
+  
+  .filter-marker.account-mini {
+    background: #7F8DE1;
+  }
+  
+  .filter-marker.opportunity-mini {
+    background: #FFB75D;
+    border-radius: 50%;
+  }
+  
+  .filter-marker.campaign-mini {
+    background: #9F2B68;
+  }
+  
+  /* 지도 컨테이너 */
+  .map-container {
+    width: 100%;
+    height: 400px;
+    position: relative;
+    border: 1px solid #d8dde6;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  
+  .map-div {
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* 지도 컨트롤 버튼들 */
+  .map-control-btn {
+    position: absolute;
+    width: 44px;
+    height: 44px;
+    background: #fff;
+    border: 2px solid #E5E5E5;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease;
+    z-index: 1000;
+    color: #54698D;
+  }
+  
+  .map-control-btn:hover {
+    border-color: #1B96FF;
+    background: #F3F9FF;
+    color: #1B96FF;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(27, 150, 255, 0.2);
+  }
+  
+  .map-control-btn:active {
+    transform: scale(0.95);
+  }
+  
+  /* 홈 버튼 (왼쪽 상단) */
+  .home-btn {
+    top: 12px;
+    left: 12px;
+  }
+  
+  /* 현재위치 버튼 (왼쪽 하단) */
+  .location-btn {
+    bottom: 12px;
+    left: 12px;
+  }
+  
+  /* 본사 마커 */
+  :host .marker.headquarters {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  :host .marker.headquarters .marker-icon {
+    background: linear-gradient(135deg, #1B96FF 0%, #0B5CAB 100%);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    box-shadow: 0 4px 12px rgba(27, 150, 255, 0.4);
+    border: 3px solid white;
+  }
+  
+  :host .marker.headquarters .marker-icon::before {
+    transform: rotate(45deg);
+    content: '🏢';
+  }
+  
+  :host .marker.headquarters .marker-label {
+    background: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-top: 5px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    border: 1px solid #E5E5E5;
+    color: #080707;
+  }
+  
+  /* 이벤트(일정) 마커 - 세일즈포스 Event 색상으로 변경 */
+  :host .marker.event {
+    position: relative;
+    width: 36px;
+    height: 36px;
+  }
+  
+  :host .marker.event .marker-icon {
+    background: #9F2FFF;
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 3px 12px rgba(159, 47, 255, 0.3);
+    border: 3px solid white;
+    z-index: 2;
+    position: relative;
+  }
+  
+  :host .marker.event .marker-pulse {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 36px;
+    height: 36px;
+    border: 2px solid #9F2FFF;
+    border-radius: 8px;
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.4);
+        opacity: 0;
+    }
+  }
+  
+  /* 어카운트 마커 */
+  :host .marker.account {
+    position: relative;
+    width: 36px;
+    height: 36px;
+  }
+  
+  :host .marker.account .marker-icon {
+    background: #7F8DE1;
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 3px 12px rgba(127, 141, 225, 0.3);
+    border: 3px solid white;
+  }
+  
+  :host .marker.account .marker-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #FF6B35;
+    color: white;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    border: 2px solid white;
+    box-shadow: 0 2px 6px rgba(255, 107, 53, 0.3);
+  }
+  
+  /* 기회(Opportunity) 마커 */
+  :host .marker.opportunity {
+    position: relative;
+    width: 32px;
+    height: 32px;
+  }
+  
+  :host .marker.opportunity .marker-icon {
+    background: #FFB75D;
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 3px 10px rgba(255, 183, 93, 0.3);
+    border: 3px solid white;
+  }
+  
+  :host .marker.opportunity .marker-status {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  :host .marker.opportunity .marker-status.new {
+    background: #04844B;
+    animation: blink 1.5s infinite;
+  }
+  
+  @keyframes blink {
+    0%, 50% {
+        opacity: 1;
+    }
+    51%, 100% {
+        opacity: 0.4;
+    }
+  }
+  
+  /* 캠페인 마커 */
+  :host .marker.campaign {
+    position: relative;
+    width: 36px;
+    height: 36px;
+  }
+  
+  :host .marker.campaign .marker-icon {
+    background: #9F2B68;
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 3px 12px rgba(159, 43, 104, 0.3);
+    border: 3px solid white;
+  }
+  
+  :host .marker.campaign .marker-count {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: #FF6B35;
+    color: white;
+    min-width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    border: 2px solid white;
+    padding: 0 4px;
+    box-shadow: 0 2px 6px rgba(255, 107, 53, 0.3);
+  }
+  
+  /* 현재 위치 마커 */
+  :host .marker.current-location {
+    position: relative;
+    width: 24px;
+    height: 24px;
+  }
+  
+  :host .marker.current-location .marker-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    background: #1B96FF;
+    border: 3px solid white;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(27, 150, 255, 0.4);
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+  }
+  
+  :host .marker.current-location .marker-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 32px;
+    height: 32px;
+    border: 2px solid #1B96FF;
+    border-radius: 50%;
+    animation: ripple 1.8s infinite;
+    opacity: 0.6;
+  }
+  
+  :host .marker.current-location .marker-ring-outer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 48px;
+    height: 48px;
+    border: 1px solid #1B96FF;
+    border-radius: 50%;
+    animation: ripple 1.8s infinite 0.6s;
+    opacity: 0.4;
+  }
+  
+  @keyframes ripple {
+    0% {
+        opacity: 0.6;
+        transform: translate(-50%, -50%) scale(0.3);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1);
+    }
+  }
+  
+  /* 마커 팝업 커스터마이징 */
+  :host .leaflet-popup-content-wrapper {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    border: none;
+  }
+  
+  :host .leaflet-popup-content {
+    margin: 16px;
+    line-height: 1.4;
+    font-size: 13px;
+    font-family: 'Salesforce Sans', Arial, sans-serif;
+    min-width: 200px;
+  }
+  
+  :host .leaflet-popup-tip {
+    background: #fff;
+  }
+  
+  /* 팝업 내부 버튼 스타일 */
+  :host .popup-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  
+  :host .popup-btn {
+    flex: 1;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    color: white;
+  }
+  
+  :host .popup-btn.directions {
+    background: #1B96FF;
+  }
+  
+  :host .popup-btn.directions:hover {
+    background: #0B5CAB;
+    transform: translateY(-1px);
+  }
+  
+  :host .popup-btn.phone {
+    background: #54698D;
+  }
+  
+  :host .popup-btn.phone:hover {
+    background: #394A63;
+    transform: translateY(-1px);
+  }
+  
+  :host .popup-btn svg {
+    width: 12px;
+    height: 12px;
+    fill: currentColor;
+  }
+  
+  /* 일정 테이블 반응형 */
+  @media (max-width: 768px) {
+    .slds-table {
+        font-size: 12px;
+    }
+    
+    .slds-table th,
+    .slds-table td {
+        padding: 8px 6px;
+    }
+    
+    .map-container {
+        height: 300px;
+    }
+    
+    .marker-filter-buttons {
+        justify-content: center;
+    }
+    
+    .marker-filter-buttons button {
+        min-width: 80px;
+        padding: 6px 8px;
+        font-size: 11px;
+    }
+  }
+  
+  /* 테이블 호버 효과 */
+  .slds-table tbody tr:hover {
+    background-color: #F3F9FF;
+  }
+  
+  .slds-table tbody tr:hover .slds-button_icon {
+    color: #1B96FF;
+    background-color: #F3F9FF;
+  }
+  
+  /* 위치 이동 버튼 호버 효과 */
+  .slds-button_icon-border-filled:hover {
+    border-color: #1B96FF;
+    background-color: #F3F9FF;
+  }
+  
+  .slds-button_icon-border-filled:hover .slds-button__icon {
+    color: #1B96FF;
+  }

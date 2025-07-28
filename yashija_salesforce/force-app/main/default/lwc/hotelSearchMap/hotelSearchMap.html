@@ -1,0 +1,133 @@
+<template>
+    <lightning-card title="호텔 검색 지도" icon-name="standard:location">
+        <div class="slds-p-horizontal_medium">
+            <!-- 검색 필터 -->
+            <div class="search-filters slds-m-bottom_medium">
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col slds-size_1-of-4">
+                        <lightning-combobox
+                            name="region"
+                            label="지역"
+                            value={selectedRegion}
+                            placeholder="지역 선택"
+                            options={regionOptions}
+                            onchange={handleRegionChange}>
+                        </lightning-combobox>
+                    </div>
+                    <div class="slds-col slds-size_1-of-4">
+                        <lightning-combobox
+                            name="district"
+                            label="구/시"
+                            value={selectedDistrict}
+                            placeholder="구/시 선택"
+                            options={districtOptions}
+                            onchange={handleDistrictChange}
+                            disabled={isDistrictDisabled}>
+                        </lightning-combobox>
+                    </div>
+                    <div class="slds-col slds-size_1-of-4">
+                        <lightning-combobox
+                            name="grade"
+                            label="호텔 등급"
+                            value={selectedGrade}
+                            placeholder="전체"
+                            options={gradeOptions}
+                            onchange={handleGradeChange}>
+                        </lightning-combobox>
+                    </div>
+                    <div class="slds-col slds-size_1-of-4 slds-align-bottom">
+                        <lightning-button
+                            variant="brand"
+                            label="검색"
+                            title="호텔 검색"
+                            icon-name="utility:search"
+                            onclick={handleSearch}
+                            disabled={isSearchDisabled}
+                            class="slds-m-top_small">
+                        </lightning-button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 검색 결과 요약 -->
+            <template if:true={hotelCount}>
+                <div class="search-summary slds-m-bottom_small">
+                    <p class="slds-text-body_regular">
+                        <strong>{hotelCount}개</strong>의 호텔이 검색되었습니다.
+                    </p>
+                </div>
+            </template>
+            
+            <!-- 로딩 스피너 -->
+            <template if:true={isLoading}>
+                <div class="slds-text-align_center slds-m-bottom_medium">
+                    <lightning-spinner alternative-text="로딩 중..." size="small"></lightning-spinner>
+                </div>
+            </template>
+            
+            <!-- 오류 메시지 -->
+            <template if:true={errorMessage}>
+                <div class="slds-m-bottom_medium">
+                    <div class="slds-notify slds-notify_alert slds-alert_error">
+                        <span class="slds-assistive-text">오류</span>
+                        <h2>{errorMessage}</h2>
+                    </div>
+                </div>
+            </template>
+            
+            <!-- 지도 영역 -->
+            <div class="map-container">
+                <div class="map-div" lwc:dom="manual"></div>
+                
+                <!-- 홈 버튼 (왼쪽 상단) -->
+                <button class="map-control-btn home-btn" onclick={goToHome} title="기본 위치로">
+                    <lightning-icon icon-name="utility:home" size="small"></lightning-icon>
+                </button>
+            </div>
+            
+            <!-- 범례 -->
+            <template if:true={isMapInitialized}>
+                <div class="legend-container slds-m-top_medium">
+                    <div class="slds-text-title_caps slds-m-bottom_x-small">호텔 등급 범례</div>
+                    <div class="legend-items">
+                        <span class="legend-item">
+                            <span class="legend-color" style="background-color: #6B46C1;">
+                                <span style="font-size: 12px;">🏨</span>
+                                <span class="legend-number" style="color: #6B46C1;">5</span>
+                            </span>
+                            <span class="legend-label">5성급</span>
+                        </span>
+                        <span class="legend-item">
+                            <span class="legend-color" style="background-color: #EC4899;">
+                                <span style="font-size: 12px;">🏨</span>
+                                <span class="legend-number" style="color: #EC4899;">4</span>
+                            </span>
+                            <span class="legend-label">4성급</span>
+                        </span>
+                        <span class="legend-item">
+                            <span class="legend-color" style="background-color: #3B82F6;">
+                                <span style="font-size: 12px;">🏨</span>
+                                <span class="legend-number" style="color: #3B82F6;">3</span>
+                            </span>
+                            <span class="legend-label">3성급</span>
+                        </span>
+                        <span class="legend-item">
+                            <span class="legend-color" style="background-color: #10B981;">
+                                <span style="font-size: 12px;">🏨</span>
+                                <span class="legend-number" style="color: #10B981;">2</span>
+                            </span>
+                            <span class="legend-label">2성급</span>
+                        </span>
+                        <span class="legend-item">
+                            <span class="legend-color" style="background-color: #6B7280;">
+                                <span style="font-size: 12px;">🏨</span>
+                                <span class="legend-number" style="color: #6B7280;">1</span>
+                            </span>
+                            <span class="legend-label">1성급</span>
+                        </span>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

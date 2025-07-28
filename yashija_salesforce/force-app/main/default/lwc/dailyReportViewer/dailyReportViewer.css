@@ -1,0 +1,199 @@
+.report-container {
+    max-width: 500px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.navigation-info {
+    text-align: center;
+    margin-bottom: 0.75rem;
+}
+
+.page-info {
+    font-size: 0.875rem;
+    color: #706e6b;
+    font-weight: 500;
+}
+
+.report-card {
+    background: #ffffff;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+}
+
+.image-section {
+    width: 100%;
+    position: relative;
+    background-color: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px; /* 최소 높이만 설정 */
+}
+
+.report-image {
+    width: 100%;
+    height: auto; /* 이미지 원본 비율 유지 */
+    max-height: 350px;
+    display: block;
+}
+
+.no-image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f5f5;
+    color: #999;
+    font-size: 0.875rem;
+}
+
+/* 보고 정보 섹션 */
+.report-info {
+    padding: 1.25rem;
+}
+
+.report-type {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.375rem 0.875rem;
+    border-radius: 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+}
+
+.report-type-normal {
+    background-color: #e8f4e8;
+    color: #2e844a;
+}
+
+.report-type-inspection {
+    background-color: #fef1e6;
+    color: #cc6a00;
+}
+
+.report-type-other {
+    background-color: #f3f2f2;
+    color: #706e6b;
+}
+
+.report-date {
+    font-size: 0.875rem;
+    color: #706e6b;
+    margin-bottom: 1rem;
+}
+
+/* 보고 내용 */
+.report-content {
+    margin-bottom: 1rem;
+}
+
+.content-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #3e3e3c;
+    margin-bottom: 0.5rem;
+}
+
+.content-text {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: #080707;
+    white-space: pre-line;
+    word-break: break-word;
+}
+
+/* 보고자 정보 */
+.reporter-info {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    color: #706e6b;
+    margin-top: 0.75rem;
+}
+
+/* 네비게이션 버튼 - 원형 스타일 */
+.navigation-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.nav-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 1px solid #dddbda;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.125rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.nav-btn:hover:not(:disabled) {
+    background: #f9f9f9;
+    border-color: #b0adab;
+    transform: scale(1.05);
+}
+
+.nav-btn:active:not(:disabled) {
+    transform: scale(0.95);
+}
+
+.nav-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.nav-btn span {
+    font-size: 0.75rem;
+    color: #3e3e3c;
+}
+
+.nav-btn:disabled span {
+    color: #b0adab;
+}
+
+/* 모바일 최적화 */
+@media (max-width: 768px) {
+    .report-container {
+        max-width: 100%;
+    }
+    
+    .image-section {
+        height: 300px;
+    }
+    
+    .report-info {
+        padding: 1rem;
+    }
+    
+    .navigation-buttons {
+        gap: 1.5rem;
+    }
+    
+    .nav-btn {
+        width: 50px;
+        height: 50px;
+    }
+}
+
+/* 큰 화면에서도 카드 크기 제한 */
+@media (min-width: 769px) {
+    .report-card {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+}
